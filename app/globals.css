@@ -1,26 +1,257 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0f1e;
+  --bg-secondary: #0d1428;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --foreground: #e2e8f0;
+  --foreground-muted: #94a3b8;
+  --primary: #7c3aed;
+  --primary-light: #9f67ff;
+  --secondary: #06b6d4;
+  --accent: #f59e0b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(124, 58, 237, 0.5);
+  --glow-primary: rgba(124, 58, 237, 0.3);
+  --glow-secondary: rgba(6, 182, 212, 0.3);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  line-height: 1.2;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* Glass card */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.glass:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 30px var(--glow-primary);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow button */
+.glow-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary), #5b21b6);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.glow-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glow-btn:hover::before { opacity: 1; }
+.glow-btn:hover { box-shadow: 0 0 40px var(--glow-primary), 0 0 80px rgba(124,58,237,0.2); transform: translateY(-2px); }
+
+/* Outline button */
+.outline-btn {
+  background: transparent;
+  border: 1px solid var(--border-hover);
+  border-radius: 12px;
+  color: var(--primary-light);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.outline-btn:hover {
+  background: var(--glow-primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px var(--glow-primary);
+  transform: translateY(-2px);
+}
+
+/* Section label */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  margin-bottom: 16px;
+}
+
+/* Skill pill */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground-muted);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.skill-pill:hover {
+  background: rgba(124,58,237,0.15);
+  border-color: var(--primary);
+  color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--glow-primary);
+}
+
+/* Noise overlay */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Timeline */
+.timeline-line {
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent);
+}
+
+.timeline-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 16px var(--glow-primary);
+  flex-shrink: 0;
+}
+
+/* Particle canvas fill */
+#tsparticles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 12px var(--glow-secondary);
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Nav link */
+.nav-link {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: 4px 0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active { color: white; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Contact input */
+.contact-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.contact-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--glow-primary);
+  background: rgba(124,58,237,0.06);
+}
+
+.contact-input::placeholder { color: var(--foreground-muted); }
